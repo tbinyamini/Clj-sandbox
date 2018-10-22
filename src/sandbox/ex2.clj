@@ -29,13 +29,15 @@
 
 
 ;reduce-by-key
-(with-test (defn reduce-by-key [f lst]
-             (reduce (fn [res [key val]]
-                       (assoc res key (f val (get res key 0))))
-                     {}
-                     lst
-                     ))
-           (is (= (reduce-by-key + '((a 1) (a 3) (b 1) (a 5) (b 6)))) '((a 9) (b 7))))
+(with-test
+  (defn reduce-by-key [f lst]
+    (->> (reduce (fn [res [key val]]
+                   (assoc res key (f val (get res key 0))))
+                 {}
+                 lst
+                 )
+         (into ())))
+  (is (= (reduce-by-key + '((a 1) (a 3) (b 1) (a 5) (b 6))) '((a 9) (b 7)))))
 
 
 ((comp inc inc :b) {:a 1 :b 2 :c 3 :d 4})
@@ -70,5 +72,37 @@
     (partial > 0))
   )
 
-(take 3 (numbers))
+;present
+(with-test
+  (defn present? [lst x]
+    (loop [lst lst
+           x x]
+      (if (empty? lst)
+        false
+        (if (= x (first lst))
+          true
+          (recur (rest lst) x)))
+      ))
+  (is (= (present? '(1 2 3) 2) true)))
+
+
+;concat-seqs
+(with-test (defn concat-seqs [seqs]
+             (->> (loop [seqs seqs res []]
+                    (if (empty? seqs)
+                      res
+                      (recur (rest seqs) (concat res (first seqs)))))
+                  (into [])))
+           (is (= (concat-seqs [[1 2 3] [4 5 6] [7 8 9]]) [1 2 3 4 5 6 7 8 9])))
+
+(reduce-by-key + '((a 1) (a 3) (b 1) (a 5) (b 6)))
+
+
+;Destruction
+
+;destructing a map inside a vector
+(let [[{:keys [a b]}] [{:a 1 :b 2}]] b)
+
+
+
 

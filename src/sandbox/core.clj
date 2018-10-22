@@ -2,7 +2,6 @@
   (:require [clojure.test :refer [with-test is deftest]]))
 
 
-<<<<<<< HEAD
 (with-test (defn my-freq [col]
              (reduce (fn [res x]
                        (let [y (get res x 0)]
@@ -77,7 +76,7 @@
   (range 1 4)
   )
 
-=======
+
 ;;Functions - Practice
 (defn hello "receives a name and returns a string with the concatenation of \"Hello\" and the name"
   [name]
@@ -116,11 +115,11 @@
 
 
 ;;Vectors - Practice
-(defn ->list [vec]
+(defn lst [vec]
   (if (empty? vec)
     ()
-    (cons (first vec) (->List (rest vec)))))
-(assert (= (->list [1 2]) '(1 2)))
+    (cons (first vec) (lst (rest vec)))))
+(assert (= (lst [1 2]) '(1 2)))
 
 
 ;;Maps - Practice
@@ -143,4 +142,4 @@
 (submap {:a 1 :b 2} {:a 1 :b 2 :c 3})
 (assert (true? (submap {:a 1 :b 2} {:a 1 :b 2 :c 3})))
 (assert (false? (submap {:a 1 :b 2 :c nil} {:a 1 :b 2})))
->>>>>>> 5f0c474142af18aa9720d240c6d645a216e776fc
+
